@@ -9,9 +9,9 @@ Original file is located at
 
 #!pip install transformers accelerate peft bitsandbytes gradio
 
-from huggingface_hub import notebook_login
+#from huggingface_hub import notebook_login
 import torch
-notebook_login()
+#notebook_login()
 
 import torch
 from peft import PeftModel, PeftConfig
