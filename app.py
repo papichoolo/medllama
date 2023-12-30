@@ -13,6 +13,9 @@ Original file is located at
 import torch
 #notebook_login()
 
+import os
+
+secret_key = os.getenv("AUTH")
 
 
 
@@ -20,7 +23,7 @@ from peft import PeftModel, PeftConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 config = PeftConfig.from_pretrained("tmberooney/medllama")
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf", use_auth_token=AUTH, load_in_4bit=True, torch_dtype=torch.float16, device_map="auto")
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf", use_auth_token=secret_key, load_in_4bit=True, torch_dtype=torch.float16, device_map="auto")
 model = PeftModel.from_pretrained(model, "tmberooney/medllama")
 tokenizer=AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 model = model.to('cuda:0')
