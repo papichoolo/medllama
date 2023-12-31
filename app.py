@@ -22,7 +22,7 @@ from peft import PeftModel, PeftConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 config = PeftConfig.from_pretrained("tmberooney/medllama")
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf", llm_int8_enable_fp32_cpu_offload=True, torch_dtype=torch.float16)
+model = AutoModelForCausalLM.from_pretrained("daryl149/llama-2-7b-chat-hf",llm_int8_enable_fp32_cpu_offload=True, torch_dtype=torch.float16)
 model = PeftModel.from_pretrained(model, "tmberooney/medllama")
 tokenizer=AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 device_map = {"transformer.word_embeddings": "cpu",
