@@ -14,7 +14,7 @@ import torch
 #notebook_login()
 
 import os
-#secret_key = os.getenv("AUTH")
+secret_key = os.getenv("HUGGINGFACE_ACCESS_TOKEN")
 
 from torch import nn
 
