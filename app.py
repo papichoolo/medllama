@@ -17,16 +17,27 @@ import os
 
 secret_key = os.getenv("AUTH")
 
-
+from torch import nn
 
 from peft import PeftModel, PeftConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 config = PeftConfig.from_pretrained("tmberooney/medllama")
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf", use_auth_token=secret_key, load_in_4bit=True, torch_dtype=torch.float16, device_map="auto")
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf", use_auth_token=secret_key, llm_int8_enable_fp32_cpu_offload=True, torch_dtype=torch.float16)
 model = PeftModel.from_pretrained(model, "tmberooney/medllama")
 tokenizer=AutoTokenizer.from_pretrained(config.base_model_name_or_path)
-model = model.to('cuda:0')
+device_map = {"transformer.word_embeddings": "cpu",
+              "transformer.word_embeddings_layernorm": "cpu",
+              "lm_head": "cpu",
+              "transformer.h": "cpu",
+              "transformer.ln_f": "cpu"}
+model = nn.DataParallel(model)
+
+# Move the model parameters to the specified devices
+for name, param in model.named_parameters():
+    if name in device_map:
+        param.data = param.to(device=device_map[name])
+#model = model.to('cuda:0')
 
 
 
