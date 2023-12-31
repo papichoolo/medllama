@@ -21,9 +21,9 @@ from torch import nn
 from peft import PeftModel, PeftConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-config = PeftConfig.from_pretrained("tmberooney/medllama")
-model = AutoModelForCausalLM.from_pretrained("daryl149/llama-2-7b-chat-hf",llm_int8_enable_fp32_cpu_offload=True, torch_dtype=torch.float16)
-model = PeftModel.from_pretrained(model, "tmberooney/medllama")
+config = PeftConfig.from_pretrained("tmberooney/medstralchatbotgptq")
+model = AutoModelForCausalLM.from_pretrained("TheBloke/Mistral-7B-Instruct-v0.2-DARE-GPTQ")
+model = PeftModel.from_pretrained(model, "tmberooney/medstralchatbotgptq")
 tokenizer=AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 device_map = {"transformer.word_embeddings": "cpu",
               "transformer.word_embeddings_layernorm": "cpu",
