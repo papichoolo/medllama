@@ -123,7 +123,7 @@ def get_model_response(message: str, history: list) -> str:
     )
 
     generated_text = sequences[0]['generated_text']
-    response = generated_text[len(query):]  # Remove the prompt from the output
+    response = generated_text[len(query):]  #emove the prompt from the output
 
     partial_message  = ""
     for new_token in streamer:
