@@ -14,7 +14,7 @@ import torch
 #notebook_login()
 
 import os
-secret_key = os.getenv("AUTH")
+#secret_key = os.getenv("AUTH")
 
 from torch import nn
 
