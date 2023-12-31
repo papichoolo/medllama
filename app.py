@@ -21,10 +21,9 @@ from torch import nn
 from peft import PeftModel, PeftConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-config = PeftConfig.from_pretrained("tmberooney/medstralchatbotgptq")
-model = AutoModelForCausalLM.from_pretrained("TheBloke/Mistral-7B-Instruct-v0.2-DARE-GPTQ",load_in_4bit=True, torch_dtype=torch.float16, llm_int8_enable_fp32_cpu_offload=True)
-model = PeftModel.from_pretrained(model, "tmberooney/medstralchatbotgptq")
-tokenizer=AutoTokenizer.from_pretrained(config.base_model_name_or_path)
+config = PeftConfig.from_pretrained("tmberooney/medllama")
+model = AutoModelForCausalLM.from_pretrained("daryl149/llama-2-7b-chat-hf", use_auth_token=secret_key, llm_int8_enable_fp32_cpu_offload=True, torch_dtype=torch.float16)
+model = PeftModel.from_pretrained(model, "tmberooney/medllama", use_auth_token=secret_key)
 device_map = {"transformer.word_embeddings": "cpu",
               "transformer.word_embeddings_layernorm": "cpu",
               "lm_head": "cpu",
@@ -45,7 +44,7 @@ for name, param in model.named_parameters():
 """### Using Gradio App"""
 
 from transformers import pipeline
-
+tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 llama_pipeline = pipeline(
     "text-generation",  # LLM task
     model=model,
